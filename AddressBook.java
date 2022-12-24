@@ -4,19 +4,21 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class AddressBook {
-    public static void main(String[] args) {
+    public  static void main(String[] args) {
         System.out.println("Welcome to Address Book Program");
+        System.out.println("================================");
         Contacts.createContact();
+        System.out.println("================================");
         Contacts.editContact();
+        System.out.println("================================");
+        Contacts.deleteContact();
     }
-
     class Contacts {
-        /**
-         * creating contact using Arraylist
+        /**creating contact using Arraylist
          * taking input from console
-         **/
+         * **/
         static ArrayList<String> contacts = new ArrayList<String>(7);
-
+        static Scanner sc = new Scanner(System.in);
         static void createContact() {
             Scanner s = new Scanner(System.in);
             System.out.println("Enter the contact details  : ");
@@ -29,61 +31,70 @@ public class AddressBook {
             System.out.println("contact details added :");
             System.out.println(contacts);
         }
-
         static void editContact() {
-            Scanner sc = new Scanner(System.in);
             System.out.println(" ");
             System.out.println("Enter which detail you have to edit  : ");
             System.out.println("name or address or city or state or zip or phone or email  : ");
-
             /** editing specific detail which user want **/
             String detailToEdit = sc.nextLine();
-
             switch (detailToEdit) {
-                case "name":
+                case "name" :
                     System.out.println("Enter the name to edit  : ");
                     String n = sc.nextLine();
                     contacts.set(0, n);
                     break;
-                case "address":
+                case "address" :
                     System.out.println("Enter the address to edit  : ");
                     String a = sc.nextLine();
                     contacts.set(1, a);
                     break;
-                case "city":
+                case "city" :
                     System.out.println("Enter the name to edit  : ");
                     String city = sc.nextLine();
                     contacts.set(2, city);
                     break;
-                case "state":
+                case "state" :
                     System.out.println("Enter the name to edit  : ");
                     String state = sc.nextLine();
                     contacts.set(3, state);
                     break;
-                case "zip":
+                case "zip" :
                     System.out.println("Enter the name to edit  : ");
                     String zip = sc.nextLine();
                     contacts.set(4, zip);
                     break;
-                case "phone":
+                case "phone" :
                     System.out.println("Enter the name to edit  : ");
                     String phone = sc.nextLine();
                     contacts.set(5, phone);
                     break;
-                case "email":
+                case "email" :
                     System.out.println("Enter the name to edit  : ");
                     String email = sc.nextLine();
                     contacts.set(6, email);
                     break;
-                default:
+                default :
                     System.out.println("no edit match  : ");
-
             }
-
             System.out.println("----------------------------------------------------- ");
             System.out.println("edited contact details are :");
             System.out.println(contacts);
+        }
+        static void deleteContact() {
+            System.out.println(" ");
+            System.out.println("Enter the name of contact that have to delete  : ");
+            String nameToDelete = sc.nextLine();
 
+            /**deleting the added contact using Arraylist method **/
+
+            if(nameToDelete.equals(contacts.get(0))) {
+                contacts.removeAll(contacts);
+                System.out.println(" ");
+                System.out.println("**contact deleted successfully**");
+            } else {
+                System.out.println("No name found");
+            }
+            System.out.println(contacts);
         }
     }
-}
+    }
