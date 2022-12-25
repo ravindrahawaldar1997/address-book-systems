@@ -9,6 +9,7 @@ public class Contact {
     private final String zip;
     private final String phone;
     private final String email;
+
     public Contact(String fName, String lName, String address, String city, String state, String zip, String phone,
                    String email) {
         this.fName = fName;
@@ -20,27 +21,35 @@ public class Contact {
         this.phone = phone;
         this.email = email;
     }
+
     public String getfName() {
         return fName;
     }
+
     public String getlName() {
         return lName;
     }
+
     public String getAddress() {
         return address;
     }
+
     public String getCity() {
         return city;
     }
+
     public String getState() {
         return state;
     }
+
     public String getZip() {
         return zip;
     }
+
     public String getPhone() {
         return phone;
     }
+
     public String getEmail() {
         return email;
     }
@@ -69,6 +78,7 @@ public class Contact {
             return false;
         return email.equals(other.getEmail());
     }
+
     @Override
     public String toString() {
         return fName + "\t" + lName + "\t" + address + "\t" + city + "\t" + state + "\t" + zip + "\t" + phone + "\t"
