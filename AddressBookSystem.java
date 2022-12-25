@@ -1,10 +1,8 @@
 package com.bridgelabz.addressbook;
 
-import org.example.AddressBookService;
-import org.example.Contact;
 import java.util.*;
 public class AddressBookSystem {
-    private static org.example.Contact readContact(Scanner sc) {
+    private static Contact readContact(Scanner sc) {
         System.out.println("FIRST NAME: ");
         String fName = sc.nextLine();
         System.out.println("LAST NAME: ");
@@ -22,10 +20,10 @@ public class AddressBookSystem {
         System.out.println("EMAIL ADDRESS: ");
         String email = sc.nextLine();
 
-        return new org.example.Contact(fName, lName, address, city, state, zip, phone, email);
+        return new Contact(fName, lName, address, city, state, zip, phone, email);
     }
 
-    private static void addressBookOps(org.example.AddressBookService book, Scanner sc) {
+    private static void addressBookOps(AddressBookService book, Scanner sc) {
         while (true) {
             System.out.println("\n\nWelcome to Address Book Program");
             System.out.println("1. Add Contact");
@@ -96,11 +94,12 @@ public class AddressBookSystem {
         }
 
     }
+
     public static void main(String[] args) {
 
         Scanner sc = new Scanner(System.in);
 
-        Dictionary<String, org.example.AddressBookService> library = new Hashtable<>();
+        Dictionary<String, AddressBookService> library = new Hashtable<>();
         while (true) {
             System.out.println("\n\nWelcome to Address Book Program");
             System.out.println("1. New Address Book");
