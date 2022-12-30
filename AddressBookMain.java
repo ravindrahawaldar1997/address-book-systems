@@ -1,183 +1,97 @@
 package com.bridgelabz.addressbook;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Scanner;
 
 public class AddressBookMain {
-    public static AddressBook addressBook;
     static Scanner sc = new Scanner(System.in);
-    static Map<String, AddressBook> addressBookDirectory = new HashMap<String, AddressBook>();
 
     public static void main(String[] args) {
-        System.out.println("-----------------Welcome to address book Program --------------------");
-        System.out.println();
-        System.out.println("Operation successful.");
-
-        boolean moreChanges = true;
-        do {
-            System.out.println("\nChoose the operation on the Directory you want to perform");
-            System.out.println("=============================================================");
-            System.out.println(
-                    "1.Add an Address Book\n2.Edit Existing Address Book\n3.Display Address book Directory\n4.Search Person By Regio1n\n5.View People By Region\n6.Count People By Region\n7.Exit Address book System");
-            int choice = sc.nextInt();
-            switch (choice) {
+        System.out.println("WELCOME TO ADDRESS BOOK SYSTEM.");
+        AddressBookManager addressBookManager = new AddressBookManager();
+        AddressBook addressBook1 = new AddressBook();
+        AddressBookFileIOService addressBookFileIOService = new AddressBookFileIOService();
+        boolean flag = true;
+        while (flag) {
+            System.out.println("----------------LIST ------------");
+            System.out.println("[1] :Add New Address Book");
+            System.out.println("[2] :View all the contacts from AddressBook");
+            System.out.println("[3] :Search Contact from a city");
+            System.out.println("[4] :Search Contact from a State");
+            System.out.println("[5] :Search City of which u want the count of contacts");
+            System.out.println("[6] :Sort by Name");
+            System.out.println("[7] :Sort by Zip");
+            System.out.println("[8] :write in a .txtfile");
+            System.out.println("[9] :read from a .txtfile");
+            System.out.println("[10] :Exit");
+            //  System.out.println("Enter choice: ");
+            int option = sc.nextInt();
+            switch (option) {
                 case 1:
-                    addAddressBook();
+                    addressBook1.createAddBook();
+                    addressBook1.addContacts();
+                    boolean flag1 = true;
+                    while (flag1) {
+                        System.out.println("[1]: add a contact");
+                        System.out.println("[2]: edit a contact ");
+                        System.out.println("[3]: delete a contact");
+                        System.out.println("[4]: Exit");
+                        System.out.println("Enter choice:");
+                        int c = sc.nextInt();
+                        switch (c) {
+                            case 1:
+                                addressBook1.addContacts();
+                                break;
+                            case 2:
+                                addressBook1.edit();
+                                break;
+                            case 3:
+                                System.out.println("enter name of person whose details you want to delete");
+                                String fname = sc.next();
+                                addressBook1.deleteContact(fname);
+                                System.out.println();
+                                break;
+                            case 4:
+                                flag1 = false;
+                                break;
+                        }
+                    }
                     break;
                 case 2:
-                    editAddressBook();
-
+                    addressBook1.getContacts();
                     break;
                 case 3:
-                    displayDirectoryContents();
+                    System.out.println("Enter City of which u want data : ");
+                    String CityName = sc.next();
+                    addressBook1.getPersonNameByCity(CityName);
                     break;
+
                 case 4:
-                    System.out.println("Enter \n1.Search By City\n2.Search By State");
-                    int searChoice = sc.nextInt();
-                    if (searChoice == 1)
-                        searchByCity();
-                    else
-                        searchByState();
+                    System.out.println("enter state of which u want data");
+                    String state = sc.next();
+                    addressBook1.getPersonNameByState(state);
                     break;
                 case 5:
-                    System.out.println("Enter \n1.Display By City\n2.Display By State");
-                    int displayChoice = sc.nextInt();
-                    if (displayChoice == 1)
-                        displayPeopleByRegion(AddressBook.city);
-                    else
-                        displayPeopleByRegion(AddressBook.state);
+                    System.out.println("enter city of which u want count");
+                    String city = sc.next();
+                    addressBook1.countByCity(city);
                     break;
                 case 6:
-                    System.out.println("Enter \n1.Display By City\n2.Display By State");
-                    int countChoice = sc.nextInt();
-                    if(countChoice==1)
-                        countPeopleByRegion(AddressBook.city);
-                    else
-                        countPeopleByRegion(AddressBook.state);
+                    addressBook1.sortByName();
                     break;
-
-                default:
-                    moreChanges = false;
-                    System.out.println("Exiting Address Book Directory !");
+                case 7:
+                    addressBook1.sortByZip();
+                    break;
+                case 8:
+                    System.out.println("printing in text file");
+                    addressBook1.writeContactPersonData(AddressBook.IOService.FILE_IO);
+                    break;
+                case 9:
+                    addressBookFileIOService.printData();
+                    break;
+                case 10:
+                    flag = false;
+                    break;
             }
-
-        } while (moreChanges);
-
-    }
-
-    /*
-     * Adding new address book to by checking existing book is available or not
-     */
-    public static void addAddressBook() {
-        AddressBook addressBook = new AddressBook();
-        System.out.println("Enter the name of the Address Book you want to add");
-        String bookNameToAdd = sc.next();
-
-        if (addressBookDirectory.containsKey(bookNameToAdd)) {
-            addressBook = addressBookDirectory.get(bookNameToAdd);
-            addressBook.displayMenu();
-        } else {
-            addressBook.setAddressBookName(bookNameToAdd);
-            addressBookDirectory.put(bookNameToAdd, addressBook);
-            System.out.println("Address book added successfully.");
-            addressBook.displayMenu();
         }
-    }
-
-    /*
-     * in this method.. calling existing address book and editing them.
-     */
-    public static void editAddressBook() {
-
-        System.out.println("Enter the Name of the Address Book which you want to edit:");
-        String addressBookToEdit = sc.next();
-
-        if (addressBookDirectory.containsKey(addressBookToEdit)) {
-            addressBook = addressBookDirectory.get(addressBookToEdit);
-            addressBook.displayMenu();
-        } else {
-            System.out.println("Book Does Not Exist");
-        }
-    }
-
-    /*
-     * searching person by his/her city name
-     */
-    public static void searchByCity() {
-
-        System.out.println("Enter the name of the City where the Person resides : ");
-        String cityName = sc.next();
-        System.out.println("Enter the name of the Person : ");
-        String personName = sc.next();
-
-        for (AddressBook addressBook : addressBookDirectory.values()) {
-            ArrayList<Contact> contactList = addressBook.getContact();
-            contactList.stream()
-                    .filter(person -> person.getFirstName().equals(personName)
-                            && person.getCity().equals(cityName))
-                    .forEach(person -> System.out.println(person));
-        }
-    }
-
-    /*
-     * searching person by his/her state name
-     */
-    public static void searchByState() {
-
-        System.out.println("Enter the name of the State where the Person resides : ");
-        String stateName = sc.next();
-        System.out.println("Enter the name of the Person : ");
-        String personName = sc.next();
-
-        for (AddressBook addressBook : addressBookDirectory.values()) {
-            ArrayList<Contact> contactList = ((AddressBook) addressBook).getContact();
-            contactList.stream()
-                    .filter(person -> person.getFirstName().equals(personName)
-                            && person.getState().equals(stateName))
-                    .forEach(person -> System.out.println(person));
-        }
-    }
-    /*
-     * Displaying person by his/her city or state
-     */
-    public static void displayPeopleByRegion(HashMap<String, ArrayList<Contact>> listToDisplay) {
-
-        System.out.println("Enter the name of the region :");
-        String regionName = sc.next();
-
-        listToDisplay.values().stream()
-                .map(region -> region.stream()
-                        .filter(person -> person.getState().equals(regionName)
-                                || person.getCity().equals(regionName)))
-                .forEach(person -> person.forEach(personDetails -> System.out.println(personDetails)));
-    }
-    /*
-     * in this method displaying addressBook name
-     */
-    public static void displayDirectoryContents() {
-
-        System.out.println("----- Contents of the Address Book Directory-----");
-        for (String eachBookName : addressBookDirectory.keySet()) {
-
-            System.out.println(eachBookName);
-        }
-        System.out.println("-----------------------------------------");
-
-    }
-    /*
-     * counting persons by City or State
-     */
-    public static void countPeopleByRegion(HashMap<String, ArrayList<Contact>> listToDisplay) {
-
-        System.out.println("Enter the name of the region :");
-        String regionName = sc.next();
-        long countPeople = listToDisplay.values().stream()
-                .map(region -> region.stream().filter(person -> person.getState().equals(regionName)
-                        || person.getCity().equals(regionName)))
-                .count();
-
-        System.out.println("Number of People residing in " + regionName + " are: " + countPeople + "\n");
     }
 }
